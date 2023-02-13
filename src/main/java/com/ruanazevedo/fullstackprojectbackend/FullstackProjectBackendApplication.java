@@ -9,5 +9,4 @@ public class FullstackProjectBackendApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FullstackProjectBackendApplication.class, args);
 	}
-
 }
