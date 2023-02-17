@@ -6,12 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 
+import com.ruanazevedo.fullstackprojectbackend.domain.Adress;
 import com.ruanazevedo.fullstackprojectbackend.domain.Category;
 import com.ruanazevedo.fullstackprojectbackend.domain.City;
+import com.ruanazevedo.fullstackprojectbackend.domain.Client;
 import com.ruanazevedo.fullstackprojectbackend.domain.Product;
 import com.ruanazevedo.fullstackprojectbackend.domain.State;
+import com.ruanazevedo.fullstackprojectbackend.domain.enums.ClientType;
+import com.ruanazevedo.fullstackprojectbackend.repositories.AdressRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.CategoryRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.CityRepository;
+import com.ruanazevedo.fullstackprojectbackend.repositories.ClientRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.ProductRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.StateRepository;
 
@@ -29,6 +34,12 @@ public class Test implements CommandLineRunner {
 	
 	@Autowired
 	private CityRepository cityRepos;
+	
+	@Autowired
+	private ClientRepository clientRepos;
+	
+	@Autowired
+	private AdressRepository adressRepos;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -59,5 +70,17 @@ public class Test implements CommandLineRunner {
 		
 		stateRepos.saveAll(Arrays.asList(st1, st2));
 		cityRepos.saveAll(Arrays.asList(c1, c2, c3));
+		
+		Client cli1 = new Client(null, "Maria Silva", "maria@gmail.com", "10866705513", ClientType.PESSOA_FISICA);
+		
+		String t1 = "27363323";
+		String t2 = "93838393";
+		cli1.getPhones().addAll(Arrays.asList(t1, t2));
+		
+		Adress adr1 = new Adress(null, "Rua Flores", "300", "Apto 203", "Jardim", "38220834", c1, cli1);
+		Adress adr2 = new Adress(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", c2, cli1);
+		
+		clientRepos.save(cli1);
+		adressRepos.saveAll(Arrays.asList(adr1, adr2));
 	}
 }
