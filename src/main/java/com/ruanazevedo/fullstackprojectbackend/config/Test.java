@@ -1,5 +1,6 @@
 package com.ruanazevedo.fullstackprojectbackend.config;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,20 @@ import com.ruanazevedo.fullstackprojectbackend.domain.Adress;
 import com.ruanazevedo.fullstackprojectbackend.domain.Category;
 import com.ruanazevedo.fullstackprojectbackend.domain.City;
 import com.ruanazevedo.fullstackprojectbackend.domain.Client;
+import com.ruanazevedo.fullstackprojectbackend.domain.Order;
+import com.ruanazevedo.fullstackprojectbackend.domain.Payment;
+import com.ruanazevedo.fullstackprojectbackend.domain.PaymentCard;
+import com.ruanazevedo.fullstackprojectbackend.domain.PaymentSlip;
 import com.ruanazevedo.fullstackprojectbackend.domain.Product;
 import com.ruanazevedo.fullstackprojectbackend.domain.State;
 import com.ruanazevedo.fullstackprojectbackend.domain.enums.ClientType;
+import com.ruanazevedo.fullstackprojectbackend.domain.enums.StatePayment;
 import com.ruanazevedo.fullstackprojectbackend.repositories.AdressRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.CategoryRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.CityRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.ClientRepository;
+import com.ruanazevedo.fullstackprojectbackend.repositories.OrderRepository;
+import com.ruanazevedo.fullstackprojectbackend.repositories.PaymentRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.ProductRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.StateRepository;
 
@@ -40,6 +48,12 @@ public class Test implements CommandLineRunner {
 	
 	@Autowired
 	private AdressRepository adressRepos;
+	
+	@Autowired
+	private OrderRepository orderRepos;
+	
+	@Autowired
+	private PaymentRepository paymentRepos;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -82,5 +96,21 @@ public class Test implements CommandLineRunner {
 		
 		clientRepos.save(cli1);
 		adressRepos.saveAll(Arrays.asList(adr1, adr2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+		
+		Order o1 = new Order(null, sdf.parse("30/09/2017 10:32"), cli1, adr1);
+		Order o2 = new Order(null, sdf.parse("10/10/2017 19:35"), cli1, adr2);
+		
+		Payment pagto1 = new PaymentCard(null, StatePayment.SETTLED, o1, 6);
+		o1.setPayment(pagto1);
+		
+		Payment pagto2 = new PaymentSlip(null, StatePayment.PENDING, o2, sdf.parse("30/10/2017 00:00"), null);
+		o2.setPayment(pagto2);
+		
+		cli1.getOrders().addAll(Arrays.asList(o2, o2));
+		
+		orderRepos.saveAll(Arrays.asList(o1, o2));
+		paymentRepos.saveAll(Arrays.asList(pagto1, pagto2));
 	}
 }
