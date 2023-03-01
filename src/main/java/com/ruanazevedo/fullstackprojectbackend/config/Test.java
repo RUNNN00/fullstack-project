@@ -12,6 +12,7 @@ import com.ruanazevedo.fullstackprojectbackend.domain.Category;
 import com.ruanazevedo.fullstackprojectbackend.domain.City;
 import com.ruanazevedo.fullstackprojectbackend.domain.Client;
 import com.ruanazevedo.fullstackprojectbackend.domain.Order;
+import com.ruanazevedo.fullstackprojectbackend.domain.OrderItem;
 import com.ruanazevedo.fullstackprojectbackend.domain.Payment;
 import com.ruanazevedo.fullstackprojectbackend.domain.PaymentCard;
 import com.ruanazevedo.fullstackprojectbackend.domain.PaymentSlip;
@@ -23,6 +24,7 @@ import com.ruanazevedo.fullstackprojectbackend.repositories.AdressRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.CategoryRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.CityRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.ClientRepository;
+import com.ruanazevedo.fullstackprojectbackend.repositories.OrderItemRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.OrderRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.PaymentRepository;
 import com.ruanazevedo.fullstackprojectbackend.repositories.ProductRepository;
@@ -54,6 +56,9 @@ public class Test implements CommandLineRunner {
 	
 	@Autowired
 	private PaymentRepository paymentRepos;
+	
+	@Autowired
+	private OrderItemRepository orderItemRepos;
 	
 	@Override
 	public void run(String... args) throws Exception {
@@ -112,5 +117,18 @@ public class Test implements CommandLineRunner {
 		
 		orderRepos.saveAll(Arrays.asList(o1, o2));
 		paymentRepos.saveAll(Arrays.asList(pagto1, pagto2));
+		
+		OrderItem oi1 = new OrderItem(o1, prod1, 0.0, 1, 2000.0);
+		OrderItem oi2 = new OrderItem(o1, prod3, 0.0, 2, 80.0);
+		OrderItem oi3 = new OrderItem(o2, prod2, 100.0, 1, 800.0);
+		
+		o1.getItems().addAll(Arrays.asList(oi1, oi2));
+		o2.getItems().add(oi3);
+		
+		prod1.getItems().add(oi1);
+		prod2.getItems().add(oi3);
+		prod3.getItems().add(oi2);
+		
+		orderItemRepos.saveAll(Arrays.asList(oi1, oi2, oi3));
 	}
 }
