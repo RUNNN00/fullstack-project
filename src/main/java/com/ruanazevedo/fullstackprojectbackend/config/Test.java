@@ -70,6 +70,13 @@ public class Test implements CommandLineRunner {
 		Product prod2 = new Product(null, "Impressora", 800.00);
 		Product prod3 = new Product(null, "Mouse", 80.00);
 		
+		cat1.getProducts().addAll(Arrays.asList(prod1,prod2, prod3));
+		cat2.getProducts().add(prod2);
+		
+		prod1.getCategories().add(cat1);
+		prod2.getCategories().addAll(Arrays.asList(cat1, cat2));
+		prod3.getCategories().add(cat1);
+		
 		categoryRepos.saveAll(Arrays.asList(cat1, cat2));
 		productRepos.saveAll(Arrays.asList(prod1, prod2, prod3));
 		
@@ -79,13 +86,6 @@ public class Test implements CommandLineRunner {
 		City c1 = new City(null, "Uberlândia", st1);
 		City c2 = new City(null, "São Paulo", st2);
 		City c3 = new City(null, "Campinas", st2);
-		
-		cat1.getProducts().addAll(Arrays.asList(prod1,prod2, prod3));
-		cat2.getProducts().add(prod2);
-		
-		prod1.getCategories().add(cat1);
-		prod2.getCategories().addAll(Arrays.asList(cat1, cat2));
-		prod3.getCategories().add(cat1);
 		
 		stateRepos.saveAll(Arrays.asList(st1, st2));
 		cityRepos.saveAll(Arrays.asList(c1, c2, c3));
