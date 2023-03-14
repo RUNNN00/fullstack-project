@@ -1,10 +1,10 @@
 package com.ruanazevedo.fullstackprojectbackend.resources;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -31,6 +33,17 @@ public class CategoryResource {
 	public ResponseEntity<List<CategoryDTO>> findAll() {
 		List<Category> list = service.findAll();
 		List<CategoryDTO> listDto = list.stream().map(obj -> new CategoryDTO(obj)).toList();
+		return ResponseEntity.ok(listDto);
+	}
+	
+	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	public ResponseEntity<Page<CategoryDTO>> findPage(
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
+			@RequestParam(value = "orderBy", defaultValue = "name") String orderBy,
+			@RequestParam(value = "directionOrder", defaultValue = "ASC") String directionOrder) {
+		Page<Category> list = service.findPage(page, linesPerPage, orderBy, directionOrder);
+		Page<CategoryDTO> listDto = list.map(obj -> new CategoryDTO(obj));
 		return ResponseEntity.ok(listDto);
 	}
 	
