@@ -1,6 +1,7 @@
 package com.ruanazevedo.fullstackprojectbackend.resources;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ruanazevedo.fullstackprojectbackend.domain.Category;
+import com.ruanazevedo.fullstackprojectbackend.dto.CategoryDTO;
 import com.ruanazevedo.fullstackprojectbackend.services.CategoryService;
 
 @RestController
@@ -26,9 +28,10 @@ public class CategoryResource {
 	private CategoryService service;
 
 	@GetMapping
-	public ResponseEntity<List<Category>> findAll() {
+	public ResponseEntity<List<CategoryDTO>> findAll() {
 		List<Category> list = service.findAll();
-		return ResponseEntity.ok(list);
+		List<CategoryDTO> listDto = list.stream().map(obj -> new CategoryDTO(obj)).toList();
+		return ResponseEntity.ok(listDto);
 	}
 	
 	@GetMapping(value = "/{id}")
