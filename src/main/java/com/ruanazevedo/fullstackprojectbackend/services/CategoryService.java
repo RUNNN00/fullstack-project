@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.ruanazevedo.fullstackprojectbackend.domain.Category;
+import com.ruanazevedo.fullstackprojectbackend.domain.Client;
 import com.ruanazevedo.fullstackprojectbackend.dto.CategoryDTO;
 import com.ruanazevedo.fullstackprojectbackend.repositories.CategoryRepository;
 import com.ruanazevedo.fullstackprojectbackend.services.exceptions.DataIntegrityException;
@@ -43,8 +44,9 @@ public class CategoryService {
 	}
 	
 	public Category update(Category obj) {
-		findById(obj.getId());
-		return repo.save(obj);
+		Category newObj = findById(obj.getId());
+		updateClient(newObj, obj);
+		return repo.save(newObj);
 	}
 	
 	public void deleteById(Integer id) {
@@ -59,5 +61,9 @@ public class CategoryService {
 	
 	public Category fromDTO(CategoryDTO objDto) {
 		return new Category(objDto.getId(), objDto.getName());
+	}
+	
+	private void updateClient(Category newObj, Category oldObj ) {
+		newObj.setName(oldObj.getName());
 	}
 }

@@ -6,7 +6,7 @@ public enum StatePayment {
 	SETTLED(2),
 	CANCELED(3);
 	
-	private int cod;
+	private Integer cod;
 	
 	private StatePayment(int cod) {
 		this.cod = cod;
