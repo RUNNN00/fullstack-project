@@ -43,8 +43,9 @@ public class ClientService {
 	}
 	
 	public Client update(Client obj) {
-		findById(obj.getId());
-		return repos.save(obj);
+		Client newObj = findById(obj.getId());
+		updateClient(newObj, obj);
+		return repos.save(newObj);
 	}
 	
 	public void deleteById(Integer id) {
@@ -53,11 +54,16 @@ public class ClientService {
 			repos.deleteById(id);
 		}
 		catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possivel excluir um cliente que possui endereços");
+			throw new DataIntegrityException("Não é possivel excluir um cliente porque há entidades relacionadas");
 		}
 	}
 	
 	public Client fromDTO(ClientDTO objDto) {
 		return new Client(objDto.getId(), objDto.getName(), objDto.getEmail(), null, null);
+	}
+	
+	private void updateClient(Client newObj, Client oldObj ) {
+		newObj.setName(oldObj.getName());
+		newObj.setEmail(oldObj.getEmail());
 	}
 }

@@ -5,7 +5,7 @@ public enum ClientType {
 	PESSOA_FISICA(0),
 	PESSOA_JURIDICA(1);
 	
-	private int  cod;
+	private Integer  cod;
 	
 	private ClientType(int cod) {
 		this.cod = cod;

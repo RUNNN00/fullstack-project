@@ -29,7 +29,7 @@ public class Client implements Serializable {
 	private String name;
 	private String email;
 	private String cpfOrCnpj;
-	private int type;
+	private Integer type;
 	
 	@OneToMany(mappedBy = "client")
 	private List<Adress> adresses = new ArrayList<>();
