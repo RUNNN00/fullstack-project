@@ -65,12 +65,12 @@ public class ClientService {
 	}
 	
 	public void deleteById(Integer id) {
-		findById(id);
+		Client obj = findById(id);
 		try {
 			repos.deleteById(id);
 		}
 		catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possivel excluir um cliente porque há entidades relacionadas");
+			throw new DataIntegrityException("Não é possivel excluir o cliente " + obj.getName() + " porque há entidades relacionadas");
 		}
 	}
 	
