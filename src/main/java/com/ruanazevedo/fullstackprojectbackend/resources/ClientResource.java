@@ -21,6 +21,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ruanazevedo.fullstackprojectbackend.domain.Client;
 import com.ruanazevedo.fullstackprojectbackend.dto.ClientDTO;
+import com.ruanazevedo.fullstackprojectbackend.dto.ClientNewDTO;
 import com.ruanazevedo.fullstackprojectbackend.services.ClientService;
 
 @RestController
@@ -55,7 +56,7 @@ public class ClientResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClientDTO objDto) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClientNewDTO objDto) {
 		Client obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
